@@ -1,0 +1,14 @@
+version: "3.3"
+services:
+  back-users:
+    build: ./users
+    ports:
+      - 8000:8000
+  back-groups:
+    build: ./groups
+    ports:
+      - 8001:8001
+  back-posts:
+    build: ./posts
+    ports:
+      - 8002:8002

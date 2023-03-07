@@ -1,0 +1,57 @@
+DROP DATABASE IF EXISTS "bd_insider";
+CREATE DATABASE "bd_insider";
+
+DROP SCHEMA IF EXISTS "bd_insiderblog" CASCADE;
+CREATE SCHEMA "bd_insiderblog";
+
+SET search_path = "bd_insiderblog";
+
+CREATE TABLE "insider_users" (
+  id INT NOT NULL,
+  public_id TEXT NOT NULL,
+  username VARCHAR(20) NOT NULL UNIQUE,
+  description TEXT DEFAULT '',
+  email VARCHAR(120) NOT NULL UNIQUE,
+  image_file TEXT NOT NULL DEFAULT 'server/imagenes/default.jpg',
+  password VARCHAR(45) NOT NULL,
+PRIMARY KEY (id)
+);
+
+CREATE TABLE "insider_groups" (
+  id INT NOT NULL,
+  user_id INT NOT NULL,
+  group_name VARCHAR(30) NOT NULL UNIQUE,
+  PRIMARY KEY (id));
+
+CREATE TABLE "insider_posts" (
+  id INT NOT NULL,
+  user_id INT NOT NULL,
+  group_id INT NOT NULL DEFAULT 0,
+  title VARCHAR(100) NOT NULL,
+  date_posted TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  content TEXT NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT fk_user
+	  FOREIGN KEY (user_id)
+	    REFERENCES insider_users(id)
+	    ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_group
+	  FOREIGN KEY (group_id)
+	    REFERENCES insider_groups(id)
+	    ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+CREATE TABLE "insider_group_user" (
+  group_id INT NOT NULL,
+  user_id INT,
+  PRIMARY KEY (group_id, user_id),
+  CONSTRAINT fk_user
+	  FOREIGN KEY (user_id)
+	    REFERENCES insider_users(id)
+	    ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_group
+	  FOREIGN KEY (group_id)
+	    REFERENCES insider_groups(id)
+	    ON UPDATE CASCADE ON DELETE CASCADE
+);
