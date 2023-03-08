@@ -3,6 +3,7 @@
 Blog done for Students o create and publish posts in Forums which can be created by them too. It had a login and register and features for profile customization.
 
 ## Solution Architecture
+![SolArch](SolutionArch-Docker.png)
 
 ## Requirements
 For the backend we used:
